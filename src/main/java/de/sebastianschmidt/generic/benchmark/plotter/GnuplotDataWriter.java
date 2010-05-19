@@ -16,20 +16,14 @@
  */
 package de.sebastianschmidt.generic.benchmark.plotter;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+public class GnuplotDataWriter {
+	private String outputDir;
 
-import org.junit.Test;
+	public GnuplotDataWriter(String outputDir) {
+		this.outputDir = outputDir;
+	}
 
-public class LogParserTest {
-	
-	private static final String LOG_FILE_1 = "{\"a\":1274307989478,\"e\":1274307994181}{\"a\":1274307989478,\"e\":1274307994181,\"ex\":\"boese\"}";
-
-	@Test
-	public void testLogParser() {
-		// XXX: todo
-		InputStream is = new ByteArrayInputStream(LOG_FILE_1.getBytes());
-		LogParser parser = new LogParser();
-		GnuplotData data = parser.parseLog(is);
+	public void writeGnuplotFiles(GnuplotData data) {
+		// TODO Auto-generated method stub
 	}
 }

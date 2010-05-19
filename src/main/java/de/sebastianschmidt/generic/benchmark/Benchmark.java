@@ -20,5 +20,10 @@ import org.codehaus.jackson.JsonNode;
 
 public interface Benchmark {
 
+	/**
+	 * run the test command
+	 * 
+	 * @return test related information or null
+	 */
 	public JsonNode run();
 }

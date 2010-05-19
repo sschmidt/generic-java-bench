@@ -16,20 +16,26 @@
  */
 package de.sebastianschmidt.generic.benchmark.plotter;
 
-import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 
-import org.junit.Test;
+public class Application {
+	public static void main(String[] args) throws FileNotFoundException {
+		if (args.length != 2) {
+			System.out.println("please provide: [output dir] [log file]");
+			System.exit(0);
+		}
 
-public class LogParserTest {
-	
-	private static final String LOG_FILE_1 = "{\"a\":1274307989478,\"e\":1274307994181}{\"a\":1274307989478,\"e\":1274307994181,\"ex\":\"boese\"}";
+		String outputDir = args[0];
+		String logFile = args[1];
 
-	@Test
-	public void testLogParser() {
-		// XXX: todo
-		InputStream is = new ByteArrayInputStream(LOG_FILE_1.getBytes());
+		InputStream logInputStream = new FileInputStream(logFile);
+
 		LogParser parser = new LogParser();
-		GnuplotData data = parser.parseLog(is);
+		GnuplotData data = parser.parseLog(logInputStream);
+
+		GnuplotDataWriter writer = new GnuplotDataWriter(outputDir);
+		writer.writeGnuplotFiles(data);
 	}
 }

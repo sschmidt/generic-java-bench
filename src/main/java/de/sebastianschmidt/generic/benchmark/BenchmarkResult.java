@@ -26,16 +26,15 @@ import org.codehaus.jackson.JsonNode;
 public class BenchmarkResult {
 	private long endTime;
 	private long startTime;
-	private Exception exception = null;
+	private String exception = "";
 	private JsonNode result = null;
 
 	public void setEndTime(long endTime) {
 		this.endTime = endTime;
 	}
 
-	public void setException(Exception exception) {
+	public void setException(String exception) {
 		this.exception = exception;
-
 	}
 
 	public void setStartTime(long startTime) {
@@ -56,8 +55,8 @@ public class BenchmarkResult {
 			g.writeNumberField("s", startTime);
 			g.writeNumberField("e", endTime);
 
-			if (exception != null) {
-				g.writeStringField("ex", exception.getMessage());
+			if (exception != "") {
+				g.writeStringField("ex", exception);
 			}
 
 			if (result != null) {
@@ -71,7 +70,23 @@ public class BenchmarkResult {
 			throw new RuntimeException("error writing to a string?");
 		}
 
-		
 		return resultWriter.toString();
 	}
+	
+	public long getDuration() {
+		return endTime - startTime;
+	}
+
+	public long getEndTime() {
+		return endTime;
+	}
+
+	public long getStartTime() {
+		return startTime;
+	}
+
+	public String getException() {
+		return exception;
+	}
+
 }

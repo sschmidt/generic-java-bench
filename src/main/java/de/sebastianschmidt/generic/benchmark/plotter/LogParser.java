@@ -22,20 +22,54 @@ import java.io.InputStream;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.JsonParser;
+import org.codehaus.jackson.JsonToken;
+
+import de.sebastianschmidt.generic.benchmark.BenchmarkResult;
 
 public class LogParser {
 
-	public void parseLog(InputStream logInputStream) {
+	public GnuplotData parseLog(InputStream logInputStream) {
 		JsonFactory f = new JsonFactory();
+		GnuplotData data = new GnuplotData();
 
 		try {
 			JsonParser jp = f.createJsonParser(logInputStream);
-			// XXX: todo
+			jp.configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, true);
+
+			BenchmarkResult result;
+			while ((result = readEntry(jp)) != null) {
+				// XXX: todo
+			}
 		} catch (JsonParseException e) {
 			throw new RuntimeException("illegal log format", e);
 		} catch (IOException e) {
 			throw new RuntimeException("error reading log file", e);
 		}
 
+		return data;
+	}
+
+	private BenchmarkResult readEntry(JsonParser jp) throws IOException,
+			JsonParseException {
+		BenchmarkResult entry = new BenchmarkResult();
+
+		if (jp.nextToken() == null) {
+			return null;
+		}
+
+		while (jp.nextToken() != JsonToken.END_OBJECT) {
+			String fieldname = jp.getCurrentName();
+			jp.nextToken();
+
+			if ("a".equals(fieldname)) {
+				entry.setStartTime(jp.getLongValue());
+			} else if ("e".equals(fieldname)) {
+				entry.setEndTime(jp.getLongValue());
+			} else if ("ex".equals(fieldname)) {
+				entry.setException(jp.getText());
+			}
+		}
+
+		return entry;
 	}
 }

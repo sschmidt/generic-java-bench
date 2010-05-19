@@ -49,7 +49,7 @@ public class BenchmarkRunner implements Runnable {
 				JsonNode resultInfo = benchmark.run();
 				result.setResult(resultInfo);
 			} catch (Exception e) {
-				result.setException(e);
+				result.setException(e.getMessage());
 			}
 
 			result.setEndTime(System.currentTimeMillis());

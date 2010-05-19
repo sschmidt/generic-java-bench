@@ -24,6 +24,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class BenchmarkLog {
 
+	private static final int FLUSH_INTERVAL = 1000;
 	private final BufferedWriter writer;
 	private final AtomicInteger flushCount = new AtomicInteger();
 
@@ -40,7 +41,7 @@ public class BenchmarkLog {
 	public void log(BenchmarkResult result) {
 		try {
 			writer.write(result.toString());
-			if (flushCount.incrementAndGet() > 1000) {
+			if (flushCount.incrementAndGet() > FLUSH_INTERVAL) {
 				writer.flush();
 				flushCount.set(0);
 			}
